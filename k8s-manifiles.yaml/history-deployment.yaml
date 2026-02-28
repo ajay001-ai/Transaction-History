@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history-deployment
+  namespace: ajay-ns
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: history
+  template:
+    metadata:
+      labels:
+        app: history
+    spec:
+      containers:
+        - name: history-container
+          image: ajaykumar5292/history:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyref:
+                  name: history-configmap
+                  key: MONGODB_URI
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: history-configmap
+                  key: PORT
+                  
+          
